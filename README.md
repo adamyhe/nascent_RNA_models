@@ -56,11 +56,14 @@ The script `run_everything.sh` exists as a roadmap of what order to run all of t
 
 First, make a directory for everything to happen in, and move into that directory. Then download this repository and move inside it.
 
-```
-mkdir -p "/users/me/procapnet"
-cd "/users/me/procapnet"
-git clone http://git@github.com/kundajelab/nascent_RNA_models.git
+```bash
+mkdir -p /home2/ayh8/procapnet
+cd /home2/ayh8/procapnet
+git clone http://git@github.com/adamyhe/nascent_RNA_models.git
 cd nascent_RNA_models
+
+mamba create --name procapnet --file conda_env_spec_file.txt
+mamba install mkl-service~=2.4.0 numpy~=1.22.3
 ```
 
 The script `setup_project_directory.sh` will build the directory structure for all the raw + processed data, all the models saved after training, and all model outputs.
@@ -72,10 +75,12 @@ You will also probably want to set up a conda environment or similar way of havi
 From here on out, every step consists of just running the script `runall.sh` inside of each of the folders in `src/` numbered 1 through 6.
 
 For example, to populate your new data directory with data, and then process that data, you would run these scripts:
-```
+
+```bash
 ./src/0_download_files/0_runall.sh
 ./src/1_process_data/1_runall.sh
 ```
+
 Note that in some cases, there are additional *optional* `runall.sh` scripts, which are for if you are looking to reproduce a specific, singular result far downstream of training models. For instance, `./src/1_process_data/1_runall.sh` processes all the data you need to train a model, get contribution scores and motifs, etc., while `./src/1_process_data/1_runall_optional_annotations.sh` will also process all the extra data needed to run the model evaluations stratified by various region classifications from Figure 1 of the paper. These optional scripts are also included in `run_everything.sh`, but you can skip running them if you don't need to produce the results that depend on them.
 
 Note #2: model training, prediction, and contribution score generation are expecting to be run on a GPU, and the `runall.sh` scripts for those steps expect an input argument specifying the ID of the GPU to use. If you're not sure what GPU Id to use, 0 is a good guess. 
