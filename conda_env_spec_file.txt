@@ -203,7 +203,6 @@ https://repo.anaconda.com/pkgs/main/noarch/jupyterlab_pygments-0.1.2-py_0.conda
 https://conda.anaconda.org/conda-forge/linux-64/llvmlite-0.38.1-py39h7d9a04d_0.tar.bz2
 https://repo.anaconda.com/pkgs/main/linux-64/matplotlib-inline-0.1.6-py39h06a4308_0.conda
 https://anaconda.org/bioconda/meme/5.4.1/download/linux-64/meme-5.4.1-py39pl5321hc097cdc_2.tar.bz2
-https://repo.anaconda.com/pkgs/main/linux-64/mkl-service-2.4.0-py39h7f8727e_0.conda
 https://conda.anaconda.org/conda-forge/linux-64/mypy_extensions-0.4.3-py39hf3d152e_6.tar.bz2
 https://repo.anaconda.com/pkgs/main/linux-64/openpyxl-3.0.10-py39h5eee18b_0.conda
 https://repo.anaconda.com/pkgs/main/noarch/packaging-21.3-pyhd3eb1b0_0.conda
