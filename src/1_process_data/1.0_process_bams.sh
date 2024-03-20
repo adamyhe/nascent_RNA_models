@@ -10,7 +10,7 @@ echo "Project directory: $proj_root"
 # also need genomeCoverageBed in conda environment
 source /etc/profile.d/modules.sh
 #module load samtools/1.15
-module load ucsc_tools/latest
+#module load ucsc_tools/latest
 
 
 data_type="procap"
