@@ -11,9 +11,10 @@ echo "Project directory: $proj_root"
 chrom_sizes="$proj_root/genomes/hg38.withrDNA.chrom.sizes"
 
 # also need genomeCoverageBed in conda environment
-source /etc/profile.d/modules.sh
-module load samtools/1.15
-module load ucsc_tools/latest
+# Commenting these out becauwse we don't need them for the Cornell BioHPC cluster
+#source /etc/profile.d/modules.sh
+#module load samtools/1.15
+#module load ucsc_tools/latest
 
 
 data_type="procap"
