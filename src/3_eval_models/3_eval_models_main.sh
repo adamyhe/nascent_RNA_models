@@ -34,6 +34,7 @@ mkdir -p logs
 for i in "${!timestamps[@]}"; do
   j=$(($i + 1))
   echo python eval.py "$cell_type" "$model_type" "$data_type" "$j" "${timestamps[$i]}" "$GPU" | tee "logs/${cell_type}_${j}.txt"
+  python eval.py "$cell_type" "$model_type" "$data_type" "$j" "${timestamps[$i]}" "$GPU" | tee "logs/${cell_type}_${j}.txt"
 done
 
 python merge_prediction_tracks.py "$cell_type" "$model_type" "$data_type" "${timestamps[*]}"
