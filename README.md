@@ -63,7 +63,7 @@ git clone http://git@github.com/adamyhe/nascent_RNA_models.git
 cd nascent_RNA_models
 
 mamba create --name procapnet --file conda_env_spec_file.txt
-mamba install mkl-service~=2.4.0 numpy~=1.22.3
+mamba install mkl-service~=2.4.0 numpy~=1.22.3 numba~=0.55.2
 ```
 
 The script `setup_project_directory.sh` will build the directory structure for all the raw + processed data, all the models saved after training, and all model outputs.
