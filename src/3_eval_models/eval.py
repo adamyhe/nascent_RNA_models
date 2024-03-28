@@ -5,8 +5,8 @@ from eval_utils import run_eval
 
 sys.path.append("../2_train_models")
 
-
-assert len(sys.argv) in [5,6], len(sys.argv)  # expecting celltype, model_type, fold, timestamp, maybe gpu
+print sys.argv[0]
+assert len(sys.argv) in [5,6], len(sys.argv)  # expecting celltype, model_type, data_type, fold, timestamp, maybe gpu
 
 cell_type, model_type, data_type, fold, timestamp = sys.argv[1:6]
 
