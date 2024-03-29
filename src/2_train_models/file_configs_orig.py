@@ -32,8 +32,8 @@ class GeneralFilesConfig():
         
         # Genome files and annotations
         
-        self.genome_path = self.proj_dir + "genomes/hg38.fasta"
-        self.chrom_sizes = self.proj_dir + "genomes/hg38.chrom.sizes"
+        self.genome_path = self.proj_dir + "genomes/hg38.withrDNA.fasta"
+        self.chrom_sizes = self.proj_dir + "genomes/hg38.withrDNA.chrom.sizes"
         
         for filepath in [self.genome_path, self.chrom_sizes]:
             assert os.path.exists(filepath), filepath
