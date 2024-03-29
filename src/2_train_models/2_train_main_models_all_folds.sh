@@ -19,3 +19,5 @@ for fold in "${folds[@]}"; do
   echo python train.py "$cell_type" "$model_type" "$data_type" "$fold" "$GPU" | tee "logs/${cell_type}_${fold}.log"
   # echo python train.py "$cell_type" "$model_type" "$data_type" "$fold" "$GPU" | tee "logs/${cell_type}_${fold}.log"
 done
+
+
