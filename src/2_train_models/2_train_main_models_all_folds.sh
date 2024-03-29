@@ -16,5 +16,6 @@ folds=( 1 2 3 4 5 6 7 )
 mkdir -p "logs"
 
 for fold in "${folds[@]}"; do
-  python train.py "$cell_type" "$model_type" "$data_type" "$fold" "$GPU" | tee "logs/${cell_type}_${fold}.log"
+  echo python train.py "$cell_type" "$model_type" "$data_type" "$fold" "$GPU" | tee "logs/${cell_type}_${fold}.log"
+  # echo python train.py "$cell_type" "$model_type" "$data_type" "$fold" "$GPU" | tee "logs/${cell_type}_${fold}.log"
 done
