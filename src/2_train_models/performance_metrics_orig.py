@@ -12,9 +12,8 @@ model but are not explicitly used as losses for optimization.
 """
 
 import numpy as np
-import scipy.ndimage
 import scipy.special
-
+import scipy.ndimage
 
 def multinomial_log_probs(
     category_log_probs, trials, query_counts, return_cross_entropy=True
@@ -35,7 +34,7 @@ def multinomial_log_probs(
             observations
         `return_cross_entropy`: if True, also return a D-array of the cross
             entropy
-
+    
     Returns a D-array containing the log probabilities (base e) of each observed
     query with its corresponding distribution. Note that D can be replaced with
     any shape (i.e. only the last dimension is reduced).
@@ -57,14 +56,9 @@ def multinomial_log_probs(
 
 
 def profile_multinomial_nll(
-    true_profs,
-    log_pred_profs,
-    true_counts,
-    prof_smooth_kernel_sigma,
-    prof_smooth_kernel_width,
-    smooth_pred_profs=False,
-    return_cross_entropy=True,
-    batch_size=200,
+    true_profs, log_pred_profs, true_counts, prof_smooth_kernel_sigma,
+    prof_smooth_kernel_width, smooth_pred_profs=False,
+    return_cross_entropy=True, batch_size=200
 ):
     """
     Computes the negative log likelihood of seeing the true profile, given the
@@ -86,7 +80,7 @@ def profile_multinomial_nll(
         `return_cross_entropy`: if True, also return an N x T array of the
             cross entropy
         `batch_size`: performs computation in a batch size of this many samples
-
+    
     Returns an N x T array, containing the strand-pooled multinomial NLL for
     each sample and task.
     """
@@ -124,10 +118,8 @@ def profile_multinomial_nll(
             log_pred_profs_batch = np.log(pred_profs_batch_smooth)
 
         result_batch = multinomial_log_probs(
-            log_pred_profs_batch,
-            true_counts_batch,
-            true_profs_batch,
-            return_cross_entropy,
+            log_pred_profs_batch, true_counts_batch, true_profs_batch,
+            return_cross_entropy
         )
         if return_cross_entropy:
             nll_batch, ce_batch = result_batch
@@ -152,10 +144,8 @@ def _kl_divergence(probs1, probs2):
     renormalize the arrays. If probs2[i] is 0, that value contributes 0.
     """
     quot = np.divide(
-        probs1,
-        probs2,
-        out=np.ones_like(probs1),
-        where=((probs1 != 0) & (probs2 != 0)),
+        probs1, probs2, out=np.ones_like(probs1),
+        where=((probs1 != 0) & (probs2 != 0))
         # No contribution if P1 = 0 or P2 = 0
     )
     return np.sum(probs1 * np.log(quot), axis=-1)
@@ -163,7 +153,7 @@ def _kl_divergence(probs1, probs2):
 
 def jensen_shannon_distance(probs1, probs2):
     # Note from Kelly -- this actually returns the J-S Divergence, not distance!!!
-
+    
     """
     Computes the Jesnsen-Shannon distance in the last dimension of `probs1` and
     `probs2`. `probs1` and `probs2` must be the same shape. For example, if they
@@ -175,11 +165,13 @@ def jensen_shannon_distance(probs1, probs2):
     # Renormalize both distributions, and if the sum is NaN, put NaNs all around
     probs1_sum = np.sum(probs1, axis=-1, keepdims=True)
     probs1 = np.divide(
-        probs1, probs1_sum, out=np.full_like(probs1, np.nan), where=(probs1_sum != 0)
+        probs1, probs1_sum, out=np.full_like(probs1, np.nan),
+        where=(probs1_sum != 0)
     )
     probs2_sum = np.sum(probs2, axis=-1, keepdims=True)
     probs2 = np.divide(
-        probs2, probs2_sum, out=np.full_like(probs2, np.nan), where=(probs2_sum != 0)
+        probs2, probs2_sum, out=np.full_like(probs2, np.nan),
+        where=(probs2_sum != 0)
     )
 
     mid = 0.5 * (probs1 + probs2)
@@ -187,13 +179,9 @@ def jensen_shannon_distance(probs1, probs2):
 
 
 def profile_jsd(
-    true_prof_probs,
-    pred_prof_probs,
-    prof_smooth_kernel_sigma,
-    prof_smooth_kernel_width,
-    smooth_true_profs=True,
-    smooth_pred_profs=False,
-    batch_size=200,
+    true_prof_probs, pred_prof_probs, prof_smooth_kernel_sigma,
+    prof_smooth_kernel_width, smooth_true_profs=True, smooth_pred_profs=False,
+    batch_size=200
 ):
     """
     Computes the Jensen-Shannon divergence of the true and predicted profiles
@@ -215,7 +203,7 @@ def profile_jsd(
         `smooth_pred_profs`: whether or not to smooth the predicted profiles
             before computing JSD
         `batch_size`: performs computation in a batch size of this many samples
-
+    
     Returns an N x T array, where the JSD is computed across the profiles and
     averaged between the strands, for each sample/task.
     """
@@ -274,18 +262,20 @@ def pearson_corr(arr1, arr2):
     numer = np.sum(dev1 * dev2, axis=-1)  # Covariance
     var1, var2 = np.sum(sqdev1, axis=-1), np.sum(sqdev2, axis=-1)  # Variances
     denom = np.sqrt(var1 * var2)
-
+   
     # Divide numerator by denominator, but use NaN where the denominator is 0
-    return np.divide(numer, denom, out=np.full_like(numer, np.nan), where=(denom != 0))
+    return np.divide(
+        numer, denom, out=np.full_like(numer, np.nan), where=(denom != 0)
+    )
 
 
 def average_ranks(arr):
     """
     Computes the ranks of the elemtns of the given array along the last
     dimension. For ties, the ranks are _averaged_.
-    Returns an array of the same dimension of `arr`.
+    Returns an array of the same dimension of `arr`. 
     """
-
+    
     # 1) Generate the ranks for each subarray, with ties broken arbitrarily
     sorted_inds = np.argsort(arr, axis=-1)  # Sorted indices
     ranks, ranges = np.empty_like(arr), np.empty_like(arr)
@@ -353,18 +343,14 @@ def mean_squared_error(arr1, arr2):
     A x B x L arrays, then the MSE of corresponding L-arrays will be computed
     and returned in an A x B array.
     """
-
+    
     return np.mean(np.square(arr1 - arr2), axis=-1)
 
 
 def profile_corr_mse(
-    true_prof_probs,
-    pred_prof_probs,
-    prof_smooth_kernel_sigma,
-    prof_smooth_kernel_width,
-    smooth_true_profs=True,
-    smooth_pred_profs=False,
-    batch_size=200,
+    true_prof_probs, pred_prof_probs, prof_smooth_kernel_sigma,
+    prof_smooth_kernel_width, smooth_true_profs=True, smooth_pred_profs=False,
+    batch_size=200
 ):
     """
     Returns the correlations of the true and predicted PROFILE count
@@ -416,18 +402,16 @@ def profile_corr_mse(
         true_batch_sum = np.sum(true_batch, axis=2, keepdims=True)
         if np.max(true_batch_sum) > 1.5:  # A little buffer
             true_batch = np.divide(
-                true_batch,
-                true_batch_sum,
+                true_batch, true_batch_sum,
                 out=np.zeros_like(true_batch, dtype=float),
-                where=(true_batch_sum != 0),
+                where=(true_batch_sum != 0)
             )
         pred_batch_sum = np.sum(pred_batch, axis=2, keepdims=True)
         if np.max(pred_batch_sum) > 1.5:
             pred_batch = np.divide(
-                pred_batch,
-                pred_batch_sum,
+                pred_batch, pred_batch_sum,
                 out=np.zeros_like(pred_batch, dtype=float),
-                where=(pred_batch_sum != 0),
+                where=(pred_batch_sum != 0)
             )
 
         # Smooth along the output profile length
@@ -481,16 +465,10 @@ def count_corr_mse(log_true_total_counts, log_pred_total_counts):
 
     return pears, spear, mse
 
-
 def compute_performance_metrics(
-    true_profs,
-    log_pred_profs,
-    true_counts,
-    log_pred_counts,
-    prof_smooth_kernel_sigma=7,
-    prof_smooth_kernel_width=81,
-    smooth_true_profs=True,
-    smooth_pred_profs=False,
+    true_profs, log_pred_profs, true_counts, log_pred_counts,
+    prof_smooth_kernel_sigma=7, prof_smooth_kernel_width=81, smooth_true_profs=True,
+    smooth_pred_profs=False
 ):
     """
     Computes some evaluation metrics on a set of positive examples, given the
@@ -502,7 +480,7 @@ def compute_performance_metrics(
             length; contains the true profiles for each for each task and
             strand, as RAW counts
         `log_pred_profs`: a N x T x O x 2 array, containing the predicted
-            profiles for each task and strand, as LOG probabilities
+            profiles for each task and strand, as LOG probabilities 
         `true_counts`: a N x T x 2 array, containing the true total counts
             for each task and strand
         `log_pred_counts`: a N x T x 2 array, containing the predicted LOG total
@@ -537,58 +515,38 @@ def compute_performance_metrics(
         A T-array of the mean squared error of the (log) total counts, over all
             strands and samples
     """
-    assert true_profs.shape == log_pred_profs.shape, (
-        true_profs.shape,
-        log_pred_profs.shape,
-    )
-    assert true_counts.shape == log_pred_counts.shape, (
-        true_counts.shape,
-        log_pred_counts.shape,
-    )
+    assert true_profs.shape == log_pred_profs.shape, (true_profs.shape, log_pred_profs.shape)
+    assert true_counts.shape == log_pred_counts.shape, (true_counts.shape, log_pred_counts.shape)
     assert len(true_profs.shape) == 4, true_profs.shape
     assert len(true_counts.shape) == 3, true_counts.shape
-    assert true_profs.shape[:2] == true_counts.shape[:2], (
-        true_profs.shape,
-        true_counts.shape,
-    )
+    assert true_profs.shape[:2] == true_counts.shape[:2], (true_profs.shape, true_counts.shape)
     # check for whole numbers
     assert np.all(true_profs % 1 == 0), [n for n in true_profs.flatten() if n % 1 != 0]
-    assert np.all(true_counts % 1 == 0), [
-        n for n in true_counts.flatten() if n % 1 != 0
-    ]
+    assert np.all(true_counts % 1 == 0), [n for n in true_counts.flatten() if n % 1 != 0]
     # check if log probs are negative
-    # assert np.all(log_pred_profs <= 0), [n for n in log_pred_profs.flatten() if n >= 0]
+    assert np.all(log_pred_profs <= 0), [n for n in log_pred_profs.flatten() if n >= 0]
+        
 
     # Multinomial NLL
     nll, ce = profile_multinomial_nll(
-        true_profs,
-        log_pred_profs,
-        true_counts,
-        prof_smooth_kernel_sigma,
-        prof_smooth_kernel_width,
-        smooth_pred_profs=smooth_pred_profs,
-        return_cross_entropy=True,
+        true_profs, log_pred_profs, true_counts, prof_smooth_kernel_sigma,
+        prof_smooth_kernel_width, smooth_pred_profs=smooth_pred_profs,
+        return_cross_entropy=True
     )
 
     # Jensen-Shannon divergence
     # The true profile counts will be renormalized during JSD computation
     jsd = profile_jsd(
-        true_profs,
-        log_pred_profs,
-        prof_smooth_kernel_sigma,
-        prof_smooth_kernel_width,
-        smooth_true_profs=smooth_true_profs,
-        smooth_pred_profs=smooth_pred_profs,
+        true_profs, log_pred_profs, prof_smooth_kernel_sigma,
+        prof_smooth_kernel_width, smooth_true_profs=smooth_true_profs,
+        smooth_pred_profs=smooth_pred_profs
     )
 
-    # Profile probability correlations/MSE
+    # Profile probability correlations/MSE 
     prof_pears, prof_spear, prof_mse = profile_corr_mse(
-        true_profs,
-        log_pred_profs,
-        prof_smooth_kernel_sigma,
-        prof_smooth_kernel_width,
-        smooth_true_profs=smooth_true_profs,
-        smooth_pred_profs=smooth_pred_profs,
+        true_profs, log_pred_profs, prof_smooth_kernel_sigma,
+        prof_smooth_kernel_width, smooth_true_profs=smooth_true_profs,
+        smooth_pred_profs=smooth_pred_profs
     )
 
     # Total count correlations/MSE
@@ -606,5 +564,5 @@ def compute_performance_metrics(
         "profile_mse": prof_mse,
         "count_pearson": count_pears,
         "count_spearman": count_spear,
-        "count_mse": count_mse,
+        "count_mse": count_mse
     }
