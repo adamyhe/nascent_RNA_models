@@ -537,6 +537,8 @@ def compute_performance_metrics(
         A T-array of the mean squared error of the (log) total counts, over all
             strands and samples
     """
+    print("true_profs.shape:", true_profs.shape)
+    print("log_pred_profs.shape:", log_pred_profs.shape)
     assert true_profs.shape == log_pred_profs.shape, (
         true_profs.shape,
         log_pred_profs.shape,
@@ -557,7 +559,7 @@ def compute_performance_metrics(
         n for n in true_counts.flatten() if n % 1 != 0
     ]
     # check if log probs are negative
-    # assert np.all(log_pred_profs <= 0), [n for n in log_pred_profs.flatten() if n >= 0]
+    assert np.all(log_pred_profs <= 0), [n for n in log_pred_profs.flatten() if n >= 0]
 
     # Multinomial NLL
     nll, ce = profile_multinomial_nll(
