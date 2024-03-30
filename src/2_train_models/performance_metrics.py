@@ -539,6 +539,9 @@ def compute_performance_metrics(
     """
     print("true_profs.shape:", true_profs.shape)
     print("log_pred_profs.shape:", log_pred_profs.shape)
+    import joblib
+
+    joblib.dump([true_profs, log_pred_profs], "profiles.joblib.gz")
     assert true_profs.shape == log_pred_profs.shape, (
         true_profs.shape,
         log_pred_profs.shape,
