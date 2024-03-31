@@ -1,14 +1,6 @@
 import os
 import sys
 
-from BPNet_strand_merged_umap import Model
-from data_loading import extract_peaks
-from data_loading_multi_source import load_data_loader
-from torch.optim import Adam
-
-sys.path.append("../utils")
-from misc import ensure_parent_dir_exists
-
 # Script inputs: expecting cell type, model_type, fold #, maybe gpu
 
 assert len(sys.argv) in [5, 6], len(sys.argv)
@@ -17,7 +9,15 @@ cell_type, model_type, data_type, fold = sys.argv[1:5]
 
 if len(sys.argv) == 5:
     os.environ["CUDA_VISIBLE_DEVICES"] = sys.argv[5]
+print("CUDA_VISIBLE_DEVICES:", os.environ["CUDA_VISIBLE_DEVICES"])
 
+from BPNet_strand_merged_umap import Model
+from data_loading import extract_peaks
+from data_loading_multi_source import load_data_loader
+from torch.optim import Adam
+
+sys.path.append("../utils")
+from misc import ensure_parent_dir_exists
 
 possible_cell_types = ["K562", "A673", "CACO2", "CALU3", "HUVEC", "MCF10A", "CD4"]
 assert cell_type in possible_cell_types, cell_type
