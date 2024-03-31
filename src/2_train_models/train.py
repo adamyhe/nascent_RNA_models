@@ -9,7 +9,6 @@ print(list(sys.argv))
 cell_type, model_type, data_type, fold = sys.argv[1:5]
 
 if len(sys.argv) == 6:
-    print(sys.argv[5])
     os.environ["CUDA_VISIBLE_DEVICES"] = str(sys.argv[5])
 
 from BPNet_strand_merged_umap import Model
