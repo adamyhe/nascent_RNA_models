@@ -142,7 +142,7 @@ class FoldFilesConfig(GeneralFilesConfig):
             + "/"
         )
 
-        self.model_save_path = self.model_dir + "fold_{fold}_{self.timestamp}.model"
+        self.model_save_path = self.model_dir + f"fold_{fold}_{self.timestamp}.model"
 
         self.params_path = self.model_dir + self.timestamp + "_params.json"
         self.arch_path = self.model_dir + self.timestamp + "_model_arch.txt"
