@@ -4,6 +4,7 @@ import sys
 # Script inputs: expecting cell type, model_type, fold #, maybe gpu
 
 assert len(sys.argv) in [5, 6], len(sys.argv)
+print(len(sys.argv))
 
 cell_type, model_type, data_type, fold = sys.argv[1:5]
 
