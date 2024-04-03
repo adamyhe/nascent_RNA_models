@@ -14,7 +14,7 @@ cell_type, model_type, data_type, fold, timestamp = sys.argv[1:6]
 if len(sys.argv) == 6:
     os.environ["CUDA_VISIBLE_DEVICES"] = sys.argv[6]
 
-possible_cell_types = ["K562", "A673", "CACO2", "CALU3", "HUVEC", "MCF10A"]
+possible_cell_types = ["K562", "A673", "CACO2", "CALU3", "HUVEC", "MCF10A", "CD4"]
 assert cell_type in possible_cell_types, cell_type
 
 model_types = [
