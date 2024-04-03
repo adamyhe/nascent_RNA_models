@@ -149,7 +149,7 @@ class DataGenerator(torch.utils.data.Dataset):
     two times the maximum jitter and windows are extracted from that.
     Essentially, if an input window is 1000 and the maximum jitter is 128, one
     would pass in data with a length of 1256 and a length 1000 window would be
-    extracted starting between position 0 and 256. This  generator must be
+    extracted starting between position 0 and 256. This generator must be
     wrapped by a PyTorch generator object.
 
     Parameters
