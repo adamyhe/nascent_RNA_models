@@ -31,7 +31,7 @@ assert fold in ["1", "2", "3", "4", "5", "6", "7"], fold
 if "promoters_only" in model_type:
     from file_configs_promoters_only import PromotersOnlyFoldFilesConfig as FilesConfig
 else:
-    from file_configs import FoldFilesConfig as FilesConfig
+    from file_configs_orig import FoldFilesConfig as FilesConfig
 
 config = FilesConfig(cell_type, model_type, fold, timestamp, data_type=data_type)
 in_window, out_window = config.load_model_params()
