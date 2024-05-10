@@ -1,6 +1,6 @@
 import sys
 
-assert len(sys.argv) == 4, len(sys.argv)  # expecting celltype, model_type, task
+assert len(sys.argv) == 5, len(sys.argv)  # expecting celltype, model_type, task
 cell_type, model_type, task, timestamp = sys.argv[1:]
 
 data_type = "procap"
