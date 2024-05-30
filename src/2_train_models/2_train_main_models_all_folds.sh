@@ -8,7 +8,7 @@ fi
 
 cell_type=$1
 GPU=$2
-model_type="strand_merged_umap"
+model_type="strand_merged_umap_elu"
 data_type="procap"
 
 folds=( 1 2 3 4 5 6 7 )
