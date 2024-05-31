@@ -23,9 +23,11 @@ assert cell_type in possible_cell_types, cell_type
 
 model_types = [
     "strand_merged_umap",
+    "strand_merged_umap_elu",
     "promoters_only_strand_merged_umap",
     "strand_merged_umap_replicate",
 ]
+print(model_types)
 assert model_type in model_types, model_type
 
 assert data_type in ["procap", "rampage", "cage"], data_type

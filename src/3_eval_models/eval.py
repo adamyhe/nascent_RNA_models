@@ -19,6 +19,7 @@ assert cell_type in possible_cell_types, cell_type
 
 model_types = [
     "strand_merged_umap",
+    "strand_merged_umap_elu",
     "promoters_only_strand_merged_umap",
     "strand_merged_umap_replicate",
 ]
@@ -30,7 +31,7 @@ assert fold in ["1", "2", "3", "4", "5", "6", "7"], fold
 if "promoters_only" in model_type:
     from file_configs_promoters_only import PromotersOnlyFoldFilesConfig as FilesConfig
 else:
-    if cell_type == "CD4":
+    if cell_type == "CD4" or model_type == "strand_merged_umap_elu":
         from file_configs import FoldFilesConfig as FilesConfig
     else:
         from file_configs_orig import FoldFilesConfig as FilesConfig
@@ -57,7 +58,7 @@ run_eval(
     stranded=config.stranded_model,
 )
 
-
+"""
 print("Predicting on whole peak set for downstream analysis...")
 
 
@@ -76,6 +77,6 @@ run_eval(
     out_window=out_window,
     stranded=config.stranded_model,
 )
-
+"""
 
 print("Done - end of eval.py.")
