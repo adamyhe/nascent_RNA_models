@@ -15,6 +15,15 @@ from misc import ensure_parent_dir_exists
 
 torch.backends.cudnn.benchmark = True
 
+class exponential(torch.nn.Module):
+    def __init__(self):
+        super(exponential, self).__init__()
+
+    def forward(self, x):
+        return torch.exp(x)
+
+
+
 class Model(torch.nn.Module):
     """A basic BPNet model with stranded profile and total count prediction.
     This is a reference implementation for BPNet. The model takes in
@@ -92,7 +101,7 @@ class Model(torch.nn.Module):
             n_filters, n_outputs, kernel_size=self.deconv_kernel_size
         )
 
-        self.elu = torch.nn.ELU()
+        self.exp = exponential()
         self.relus = torch.nn.ModuleList(
             [torch.nn.ReLU() for _ in range(0, self.n_layers)]
         )
@@ -101,7 +110,7 @@ class Model(torch.nn.Module):
     def forward(self, X):
         start, end = self.trimming, X.shape[2] - self.trimming
 
-        X = self.elu(self.iconv(X))
+        X = self.exp(self.iconv(X))
         for i in range(self.n_layers):
             X_conv = self.relus[i](self.rconvs[i](X))
             X = torch.add(X, X_conv)

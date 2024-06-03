@@ -10,7 +10,7 @@ cell_type, model_type, data_type, fold = sys.argv[1:5]
 if len(sys.argv) == 6:
     os.environ["CUDA_VISIBLE_DEVICES"] = str(sys.argv[5])
 
-from BPNet_strand_merged_umap_elu import Model
+from BPNet_strand_merged_umap_exp import Model
 from data_loading import extract_peaks
 from data_loading_multi_source import load_data_loader
 from torch.optim import Adam
@@ -23,7 +23,7 @@ assert cell_type in possible_cell_types, cell_type
 
 model_types = [
     "strand_merged_umap",
-    "strand_merged_umap_elu",
+    "strand_merged_umap_exp",
     "promoters_only_strand_merged_umap",
     "strand_merged_umap_replicate",
 ]

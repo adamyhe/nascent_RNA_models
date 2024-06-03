@@ -8,6 +8,7 @@ from datetime import datetime
 # what model types are implemented (this must track with options allowed in train.py)
 MODEL_TYPES = [
     "strand_merged_umap",
+    "strand_merged_umap_exp",
     "strand_merged_umap_elu",
     "promoters_only_strand_merged_umap",
     "strand_merged_umap_replicate",
